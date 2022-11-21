@@ -12,6 +12,10 @@ jobs:
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
       - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: theowenyoung/blog
+          path: blog
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
@@ -23,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-deno-${{ hashFiles('book/build.ts') }}
       - run: make install
       - name: Build Book
-        run: make build
+        run: BLOG_PATH=./blog make build
       - name: Publish Archive
         uses: cloudflare/pages-action@1
         with:

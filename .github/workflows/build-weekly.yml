@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: theowenyoung/blog
+          path: blog
       - uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
@@ -26,7 +30,7 @@ jobs:
       - run: make install
       - name: Build lastweek book
         id: build
-        run: make lastweek
+        run: BLOG_PATH=./blog make lastweek
         continue-on-error: true
       - name: make release if build success
         if: steps.build.outcome == 'success'
