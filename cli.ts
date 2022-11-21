@@ -92,7 +92,15 @@ const blogRepoPath = "../../blog/content/blog/journals";
 async function main() {
   const args = Deno.args;
   const flags = parse(Deno.args, {
-    boolean: ["today", "yesterday", "thisweek", "lastweek", "serve", "archive"],
+    boolean: [
+      "today",
+      "yesterday",
+      "thisweek",
+      "lastweek",
+      "serve",
+      "archive",
+      "key",
+    ],
     string: ["day", "week"],
   });
   const isBuildArchive = flags.archive;
@@ -117,13 +125,14 @@ async function main() {
   } else if (flags.thisweek) {
     // get week
     const week = getWeekOfYear(now);
+
     const allDays = week.days;
-    const weekName = week.name;
+    const weekName = week.id;
     dayBooks[`${weekName}`] = allDays;
   } else if (flags.lastweek) {
     const lastWeek = getWeekOfYear(new Date(now.getTime() - WEEK));
     const allDays = lastWeek.days;
-    const weekName = lastWeek.name;
+    const weekName = lastWeek.id;
     dayBooks[`${weekName}`] = allDays;
   } else if (flags.week) {
     // get week
@@ -131,8 +140,14 @@ async function main() {
     for (const week of allWeeks) {
       const week = getWeekOfYear(new Date(flags.week));
       const allDays = week.days;
-      dayBooks[`${week}`] = allDays;
+      dayBooks[`${week.id}`] = allDays;
     }
+  }
+
+  if (flags.key) {
+    const keys = Object.keys(dayBooks);
+    console.log(keys.join(","));
+    return;
   }
   // console.log("dayBooks", dayBooks);
 
@@ -296,6 +311,7 @@ async function main() {
       // check if the day exists
 
       const validDays: string[] = [];
+      console.log("days", days);
       for (const dayString of days) {
         const year = dayString.split("-")[0];
         const month = dayString.split("-")[1];
@@ -444,11 +460,11 @@ async function main() {
     if (key === "archive") {
       keyType = "archive";
     } else if (key.length === 4) {
-      keyType = "year";
-    } else if (key.length === 6) {
-      keyType = "week";
+      keyType = "yearly";
+    } else if (key.length === 7) {
+      keyType = "weekly";
     } else if (key.length === 10) {
-      keyType = "day";
+      keyType = "daily";
     }
     if (!keyType) {
       throw new Error(`invalid book key ${key}`);
@@ -718,7 +734,10 @@ ${body}
         `book/epub/${book.config.book.title}.epub`,
       );
       await fs.ensureDir(distDir);
-      const epubNewPath = path.join(distDir, `owen-clip-${key}.epub`);
+      const epubNewPath = path.join(
+        distDir,
+        `owen-clip-${keyType}-${key}.epub`,
+      );
       await Deno.copyFile(epubPath, epubNewPath);
 
       // // copy pdf file
@@ -732,7 +751,7 @@ ${body}
           "zip",
           "-r",
           "-q",
-          path.join(distDir, `owen-clip-${key}-html.zip`),
+          path.join(distDir, `owen-clip-${keyType}-${key}-html.zip`),
           "./",
         ],
         cwd: htmlPath,
@@ -842,6 +861,7 @@ function formatBeijing(date: Date, formatString: string) {
 export function getWeekOfYear(date: Date): WeekOfYear {
   const beijingDate = formatBeijing(date, "yyyy-MM-dd");
   const beijingDateArr = beijingDate.split("-");
+  console.log("beijingDateArr", beijingDateArr);
   const workingDate = new Date(
     Date.UTC(
       Number(beijingDateArr[0]),
@@ -865,7 +885,7 @@ export function getWeekOfYear(date: Date): WeekOfYear {
   const week = Math.ceil(
     (workingDate.getTime() - yearStart.getTime() + DAY) / WEEK,
   );
-  const weekRangeInfo = weekToRange(week);
+  const weekRangeInfo = weekToRange(Number(`${weekYear}${addZero(week)}`));
   return {
     year: weekYear,
     week: week,

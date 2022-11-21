@@ -23,6 +23,15 @@ today:
 yesterday:
 	deno run -A ./cli.ts --yesterday
 
+.Phony: lastweek
+lastweek:
+	deno run -A ./cli.ts --lastweek
+.Phony: thisweek
+thisweek:
+	deno run -A ./cli.ts --thisweek
+.Phony: servethisweek
+servethisweek:
+	deno run -A ./cli.ts --serve --thisweek
 .Phony: day
 day:
 	deno run -A ./cli.ts --day=$(day)

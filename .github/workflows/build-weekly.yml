@@ -1,8 +1,11 @@
-name: Build Daily Book
+name: Build Weekly Book
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
   schedule:
-    - cron: "3 16 * * *"
+    - cron: "16 8 * * SUN"
 jobs:
   build-deploy:
     concurrency: build-daily-book
@@ -18,12 +21,12 @@ jobs:
             ~/.deno
             ~/.cache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('book/build.ts') }}
-      - name: Get Yestoday Beijin Day
-        run: echo "YESTERDAY=$(deno run cli.ts --yesterday --key)" >> $GITHUB_ENV
+      - name: Get lastweek Beijin Day
+        run: echo "LASTWEEK=$(deno run cli.ts --thisweek --key)" >> $GITHUB_ENV
       - run: make install
-      - name: Build yesterday book
+      - name: Build lastweek book
         id: build
-        run: make yesterday
+        run: make thisweek
         continue-on-error: true
       - name: make release if build success
         if: steps.build.outcome == 'success'
@@ -31,10 +34,11 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
-          tag_name: "daily-${{ env.YESTERDAY }}"
+          tag_name: "weekly-${{ env.LASTWEEK }}"
           generate_release_notes: false
           body: |
             Visit [Online](https://clip.owenyoung.com/).
           files: |
             ./dist/*/*.epub
             ./dist/*/*.zip
+
