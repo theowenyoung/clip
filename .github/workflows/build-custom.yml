@@ -1,11 +1,17 @@
-name: Build Weekly Book
+name: Build Custom Book
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  schedule:
-    - cron: "16 8 * * SUN"
+    inputs:
+      args:
+        default: ""
+        description: "args to build"
+        type: string
+        required: false
+      tag:
+        default: ""
+        description: "tag to release"
+        type: string
+        required: true
 jobs:
   build-deploy:
     concurrency: build-daily-book
@@ -21,12 +27,10 @@ jobs:
             ~/.deno
             ~/.cache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('book/build.ts') }}
-      - name: Get lastweek Beijin Day
-        run: echo "LASTWEEK=$(deno run cli.ts --lastweek --key)" >> $GITHUB_ENV
       - run: make install
       - name: Build lastweek book
         id: build
-        run: make lastweek
+        run: deno run -A ./cli.ts ${{ github.event.inputs.args }}
         continue-on-error: true
       - name: make release if build success
         if: steps.build.outcome == 'success'
@@ -34,7 +38,7 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          tag_name: "weekly-${{ env.LASTWEEK }}"
+          tag_name: "${{ github.event.inputs.args }}"
           generate_release_notes: false
           body: |
             Visit [Online](https://clip.owenyoung.com/).
