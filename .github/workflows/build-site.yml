@@ -29,6 +29,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: archive-book # e.g. 'my-project'
+          projectName: clip # e.g. 'my-project'
           directory: ./dist/archive # e.g. 'dist'
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
