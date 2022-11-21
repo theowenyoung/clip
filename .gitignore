@@ -1,5 +1,6 @@
 # custom
 bin
+blog/
 dist/
 public
 prod-db.zip

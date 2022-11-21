@@ -88,7 +88,6 @@ const markdownSourcePath = "./content";
 const markdownRootPath = "./";
 const bookDist = "./book-dist";
 const host = "https://www.owenyoung.com";
-const blogRepoPath = "../../blog/content/blog/journals";
 async function main() {
   const args = Deno.args;
   const flags = parse(Deno.args, {
@@ -105,6 +104,14 @@ async function main() {
   });
   const isBuildArchive = flags.archive;
   const now = new Date();
+  // if env
+  let blogRepoPath = "../../blog/content/blog/journals";
+  if (Deno.env.get("BLOG_PATH")) {
+    blogRepoPath = path.join(
+      Deno.env.get("BLOG_PATH")!,
+      "content/blog/journals",
+    );
+  }
   let serveDistDir = "";
   let dayBooks: Record<string, string[]> = {};
   if (flags.today) {
