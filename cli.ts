@@ -861,7 +861,6 @@ function formatBeijing(date: Date, formatString: string) {
 export function getWeekOfYear(date: Date): WeekOfYear {
   const beijingDate = formatBeijing(date, "yyyy-MM-dd");
   const beijingDateArr = beijingDate.split("-");
-  console.log("beijingDateArr", beijingDateArr);
   const workingDate = new Date(
     Date.UTC(
       Number(beijingDateArr[0]),
