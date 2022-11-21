@@ -19,9 +19,9 @@ build:
 today:
 	deno run -A ./cli.ts --today
 
-.Phony: yestoday
-yestoday:
-	deno run -A ./cli.ts --yestoday
+.Phony: yesterday
+yesterday:
+	deno run -A ./cli.ts --yesterday
 
 .Phony: day
 day:

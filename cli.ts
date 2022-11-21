@@ -92,7 +92,7 @@ const blogRepoPath = "../../blog/content/blog/journals";
 async function main() {
   const args = Deno.args;
   const flags = parse(Deno.args, {
-    boolean: ["today", "yestoday", "thisweek", "lastweek", "serve", "archive"],
+    boolean: ["today", "yesterday", "thisweek", "lastweek", "serve", "archive"],
     string: ["day", "week"],
   });
   const isBuildArchive = flags.archive;
@@ -102,9 +102,12 @@ async function main() {
   if (flags.today) {
     const today = formatBeijing(now, "yyyy-MM-dd");
     dayBooks[`${today}`] = [today];
-  } else if (flags.yestoday) {
-    const yestoday = formatBeijing(new Date(now.getTime() - DAY), "yyyy-MM-dd");
-    dayBooks[`${yestoday}`] = [yestoday];
+  } else if (flags.yesterday) {
+    const yesterday = formatBeijing(
+      new Date(now.getTime() - DAY),
+      "yyyy-MM-dd",
+    );
+    dayBooks[`${yesterday}`] = [yesterday];
   } else if (flags.day) {
     // split by comma
     const allDays = flags.day.trim().split(",").map((day) => day.trim());

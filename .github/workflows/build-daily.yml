@@ -14,7 +14,7 @@ jobs:
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
       - name: Get Yestoday Beijin Day
-        run: echo "YESTODAY=$(TZ=Asia/Shanghai date -d '1 day ago' +'%Y-%m-%d')" >> $GITHUB_ENV
+        run: echo "YESTERDAY=$(TZ=Asia/Shanghai date -d '1 day ago' +'%Y-%m-%d')" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1
         with:
@@ -26,9 +26,9 @@ jobs:
             ~/.cache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('book/build.ts') }}
       - run: make install
-      - name: Build yestoday book
+      - name: Build yesterday book
         id: build
-        run: make yestoday
+        run: make yesterday
         continue-on-error: true
       - name: make release if build success
         if: steps.build.outcome == 'success'
@@ -36,7 +36,7 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
-          tag_name: "daily-${{ env.YESTODAY }}"
+          tag_name: "daily-${{ env.YESTERDAY }}"
           generate_release_notes: false
           body: |
             Visit [Online](https://clip.owenyoung.com/).
