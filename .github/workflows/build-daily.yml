@@ -30,7 +30,6 @@ jobs:
         continue-on-error: true
       - name: make release if build success
         if: steps.build.outcome == 'success'
-      - name: release assets
         uses: "softprops/action-gh-release@v1"
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
