@@ -1,4 +1,4 @@
-name: Build Book
+name: Build Daily Book
 on:
   workflow_dispatch:
   push:
@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
+      - name: Get Yestoday Beijin Day
+        run: echo "YESTODAY=$(TZ=Asia/Shanghai date -d '1 day ago' +'%Y-%m-%d')" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1
         with:
@@ -34,6 +36,7 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
+          tag_name: "daily-${{ env.YESTODAY }}"
           generate_release_notes: false
           body: |
             Visit [Online](https://clip.owenyoung.com/).
