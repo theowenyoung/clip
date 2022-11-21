@@ -92,7 +92,7 @@ const blogRepoPath = "../../blog/content/blog/journals";
 async function main() {
   const args = Deno.args;
   const flags = parse(Deno.args, {
-    boolean: ["today", "thisweek", "serve", "archive"],
+    boolean: ["today", "yestoday", "thisweek", "lastweek", "serve", "archive"],
     string: ["day", "week"],
   });
   const isBuildArchive = flags.archive;
@@ -102,6 +102,9 @@ async function main() {
   if (flags.today) {
     const today = formatBeijing(now, "yyyy-MM-dd");
     dayBooks[`${today}`] = [today];
+  } else if (flags.yestoday) {
+    const yestoday = formatBeijing(new Date(now.getTime() - DAY), "yyyy-MM-dd");
+    dayBooks[`${yestoday}`] = [yestoday];
   } else if (flags.day) {
     // split by comma
     const allDays = flags.day.trim().split(",").map((day) => day.trim());
@@ -113,6 +116,11 @@ async function main() {
     const week = getWeekOfYear(now);
     const allDays = week.days;
     const weekName = week.name;
+    dayBooks[`${weekName}`] = allDays;
+  } else if (flags.lastweek) {
+    const lastWeek = getWeekOfYear(new Date(now.getTime() - WEEK));
+    const allDays = lastWeek.days;
+    const weekName = lastWeek.name;
     dayBooks[`${weekName}`] = allDays;
   } else if (flags.week) {
     // get week
@@ -329,6 +337,9 @@ async function main() {
             output: outputOptions,
           },
         };
+      } else {
+        console.log(`no valid days for ${key}`);
+        throw new Error(`no valid days for ${key}`);
       }
     }
   }
@@ -506,9 +517,6 @@ async function main() {
             const actualValue =
               (chapter as unknown as Record<string, string>)[rule.key];
             if (rule.condition === "contains") {
-              console.log("actualValue", actualValue);
-              console.log("rule.value", rule.value);
-              console.log("rule.key", rule.key);
               if (
                 Array.isArray(actualValue) && !actualValue.includes(rule.value)
               ) {
@@ -530,8 +538,6 @@ async function main() {
             }
           }
           if (match) {
-            console.log("match", match);
-            console.log("chapter", chapter);
             const relativePathToSummary = chapter.relativePath.replace(
               /^content\//,
               "",
@@ -709,7 +715,7 @@ ${body}
         `book/epub/${book.config.book.title}.epub`,
       );
       await fs.ensureDir(distDir);
-      const epubNewPath = path.join(distDir, `${key}.epub`);
+      const epubNewPath = path.join(distDir, `owen-clip-${key}.epub`);
       await Deno.copyFile(epubPath, epubNewPath);
 
       // // copy pdf file
@@ -723,7 +729,7 @@ ${body}
           "zip",
           "-r",
           "-q",
-          path.join(distDir, `${key}-html.zip`),
+          path.join(distDir, `owen-clip-${key}-html.zip`),
           "./",
         ],
         cwd: htmlPath,

@@ -1,0 +1,43 @@
+name: Build Book
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "3 16 * * *"
+jobs:
+  build-deploy:
+    concurrency: build-daily-book
+    runs-on: macos-latest
+    steps:
+      - name: Set current date as env variable
+        run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.deno
+            ~/.cache/deno
+          key: ${{ runner.os }}-deno-${{ hashFiles('book/build.ts') }}
+      - run: make install
+      - name: Build yestoday book
+        id: build
+        run: make yestoday
+        continue-on-error: true
+      - name: make release if build success
+        if: steps.build.outcome == 'success'
+      - name: release assets
+        uses: "softprops/action-gh-release@v1"
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          generate_release_notes: false
+          body: |
+            Visit [Online](https://clip.owenyoung.com/).
+          files: |
+            ./dist/*/*.epub
+            ./dist/*/*.zip
