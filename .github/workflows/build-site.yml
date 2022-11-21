@@ -1,0 +1,34 @@
+name: Build Book
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  build-deploy:
+    concurrency: build-book
+    runs-on: macos-latest
+    steps:
+      - name: Set current date as env variable
+        run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.deno
+            ~/.cache/deno
+          key: ${{ runner.os }}-deno-${{ hashFiles('book/build.ts') }}
+      - run: make install
+      - name: Build Book
+        run: make build
+      - name: Publish Archive
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: archive-book # e.g. 'my-project'
+          directory: ./dist/archive # e.g. 'dist'
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

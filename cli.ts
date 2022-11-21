@@ -123,7 +123,7 @@ async function main() {
       dayBooks[`${week}`] = allDays;
     }
   }
-  console.log("dayBooks", dayBooks);
+  // console.log("dayBooks", dayBooks);
 
   const workDir = new URL(".", import.meta.url).pathname;
   const binDir = new URL("./bin", import.meta.url).pathname;
@@ -445,7 +445,7 @@ async function main() {
     const bookSourceFileDist = path.join(bookDist, key);
 
     const chapters = allChapters;
-    console.log("chapters", chapters);
+    // console.log("chapters", chapters);
     // sort by date
     chapters.sort((a, b) => b.date.getTime() - a.date.getTime());
     // write to file
@@ -669,7 +669,7 @@ ${subSectionsMarkdown}
           const parsed = extract(dayIntroContent);
           const { body } = parsed;
           newSectionContent += `
-## 我的笔记([原文](https://www.owenyoung.com/blog/journals/${section.title}/))
+## 当日笔记 ([原文](https://www.owenyoung.com/blog/journals/${section.title}/))
 
 ${body}
 `;
@@ -702,7 +702,7 @@ ${body}
       recursive: true,
     });
     const htmlPath = path.join(bookSourceFileDist, "book/html");
-    if (!isServe) {
+    if (!isServe && key !== "archive") {
       // copy epub file
       const epubPath = path.join(
         bookSourceFileDist,
