@@ -42,7 +42,7 @@ jobs:
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          tag_name: "${{ github.event.inputs.args }}"
+          tag_name: "${{ github.event.inputs.tag }}"
           generate_release_notes: false
           body: |
             Visit [Online](https://clip.owenyoung.com/).
