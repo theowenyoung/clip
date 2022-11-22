@@ -21,7 +21,7 @@ jobs:
           path: |
             ~/.deno
             ~/.cache/deno
-          key: ${{ runner.os }}-deno-${{ hashFiles('book/build.ts') }}
+          key: ${{ runner.os }}-deno-${{ hashFiles('cli.ts') }}
       - name: Get Yestoday Beijin Day
         run: echo "YESTERDAY=$(deno run cli.ts --yesterday --key)" >> $GITHUB_ENV
       - run: make install
