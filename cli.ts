@@ -109,14 +109,6 @@ async function main() {
   });
   const isBuildArchive = flags.archive;
   const now = new Date();
-  // if env
-  let blogRepoPath = "../../blog/content/blog/journals";
-  if (Deno.env.get("BLOG_PATH")) {
-    blogRepoPath = path.join(
-      Deno.env.get("BLOG_PATH")!,
-      "content/blog/journals",
-    );
-  }
   let serveDistDir = "";
   let dayBooks: Record<string, string[]> = {};
   if (flags.today) {
@@ -169,9 +161,9 @@ async function main() {
   // walk content directory
   let outputOptions: OutputOptions = {
     html: {
-      "git-repository-url": "https://github.com/theowenyoung/blog",
+      "git-repository-url": "https://github.com/theowenyoung/clip",
       "edit-url-template":
-        "https://github.com/theowenyoung/blog/edit/main/{path}",
+        "https://github.com/theowenyoung/clip/edit/main/{path}",
       "search": {
         "enable": false,
       },
@@ -180,6 +172,14 @@ async function main() {
       enable: true,
     },
   };
+  // if env
+  let blogRepoPath = "../../blog/content/blog/journals";
+  if (Deno.env.get("BLOG_PATH")) {
+    blogRepoPath = path.join(
+      Deno.env.get("BLOG_PATH")!,
+      "content/blog/journals",
+    );
+  }
   if (!isServe) {
     outputOptions = {
       ...outputOptions,
