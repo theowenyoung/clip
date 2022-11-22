@@ -1,4 +1,4 @@
-# 简介
+# Owen's Clip
 
 这是我平时阅读的文章的全文收藏，如果是英文文章的话，会有中文的译文附在每个段落后面，我使用<https://github.com/immersive-translate/immersive-translate>浏览器扩展进行英文文章的阅读，并且使用这款<https://github.com/theowenyoung/markdownload> 浏览器扩展把文章保存为 Markdown 明文文本，所有的文章都在这个 Repo: <https://github.com/theowenyoung/clip>
 

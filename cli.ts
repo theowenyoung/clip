@@ -1,5 +1,6 @@
 // read from
 import * as fs from "https://deno.land/std@0.159.0/fs/mod.ts";
+import { titleCase } from "https://esm.sh/title-case@3.0.3";
 import { extract } from "https://deno.land/std@0.159.0/encoding/front_matter.ts";
 import { DateTimeFormatter } from "https://deno.land/std@0.159.0/datetime/formatter.ts";
 import * as path from "https://deno.land/std@0.159.0/path/mod.ts";
@@ -194,123 +195,6 @@ async function main() {
     };
   }
 
-  /*
-  const books: Record<string, Book> = {
-    "owen-blog": {
-      tags: ["Random Book"],
-      chapters: [],
-      introduction: {
-        title: "简介",
-        path: "README.md",
-      },
-      summary: [
-        {
-          title: "随笔",
-          path: "random-intro.md",
-          rules: [
-            {
-              condition: "contains",
-              key: "category",
-              value: "Random",
-            },
-          ],
-        },
-        {
-          title: "短想法",
-          path: "thoughts.md",
-        },
-        {
-          title: "笔记",
-          path: "notes-intro.md",
-          rules: [
-            {
-              condition: "contains",
-              key: "category",
-              value: "Notes",
-            },
-            {
-              condition: "notContains",
-              key: "relativePath",
-              value: "content/thoughts.md",
-            },
-            {
-              condition: "notContains",
-              key: "relativePath",
-              value: "content/pages/now.md",
-            },
-            {
-              condition: "notContains",
-              key: "relativePath",
-              value: "content/pages/about.md",
-            },
-          ],
-        },
-        {
-          title: "读书笔记",
-          path: "books-intro.md",
-          rules: [
-            {
-              condition: "contains",
-              key: "category",
-              value: "Books",
-            },
-          ],
-        },
-        {
-          title: "文章笔记",
-          path: "articles-intro.md",
-          rules: [
-            {
-              condition: "contains",
-              key: "category",
-              value: "Articles",
-            },
-          ],
-        },
-        {
-          title: "关于我",
-          path: "pages/about.md",
-          subSections: [
-            {
-              title: "现在",
-              path: "pages/now.md",
-            },
-          ],
-        },
-      ],
-      config: {
-        book: {
-          "title": "Owen博客节选",
-          "description": "Owen的博客节选电子书版",
-          "src": "content",
-          "language": "zh",
-          "authors": ["Owen Young"],
-        },
-        output: outputOptions,
-      },
-    },
-    "owen-blog-archive": {
-      tags: [],
-      chapters: [],
-      introduction: {
-        title: "简介",
-        path: "README.md",
-      },
-      summary: [],
-      config: {
-        book: {
-          "title": "Owen的博客存档",
-          "description": "Owen的博客存档电子书版",
-          "src": "content",
-          "language": "zh",
-          "authors": ["Owen Young"],
-        },
-        output: outputOptions,
-      },
-    },
-  };
-  */
-
   const books: Record<string, Book> = {};
   const allChapters: Chapter[] = [];
 
@@ -354,8 +238,8 @@ async function main() {
           summary,
           config: {
             book: {
-              "title": `Owen的博客${key}节选`,
-              "description": `Owen的博客${key}节选电子书版`,
+              "title": `Owen's Clip ${key}`,
+              "description": `Owen's Clip ${key}`,
               "src": "content",
               "language": "zh",
               "authors": ["Owen Young"],
@@ -380,8 +264,8 @@ async function main() {
       },
       config: {
         book: {
-          "title": "Owen阅读笔记",
-          "description": "Owen阅读笔记",
+          "title": "Owen's Clip",
+          "description": "Owen's Clip",
           "src": "content",
           "language": "zh",
           "authors": ["Owen Young"],
@@ -793,7 +677,7 @@ ${body}
       await zipProcess.status();
       // send mail
       if (flags.mail) {
-        await sendMail([epubNewPath]);
+        await sendMail([epubNewPath], `Owen's Clip ${key} Updates`);
       }
     }
     // copy all html files to distDir
@@ -1037,7 +921,7 @@ async function getAllContacts() {
   return data.Data;
 }
 
-async function sendMail(files: string[]) {
+async function sendMail(files: string[], title: string) {
   const attachments = [];
 
   for (const file of files) {
@@ -1057,7 +941,6 @@ async function sendMail(files: string[]) {
     console.warn(`No files to send`);
     return;
   }
-  console.log("attachments", attachments);
 
   const contacts = await getAllContacts();
 
@@ -1075,6 +958,12 @@ async function sendMail(files: string[]) {
   const headers = new Headers();
   headers.set("Content-Type", "application/json");
   headers.set("Authorization", "Basic " + encode(username + ":" + password));
+
+  // const filename = attachments[0].Filename;
+  // const filenameWithoutExt = filename.split(".")[0];
+  // replace - to space
+  // const subject = filenameWithoutExt.replace(/-/g, " ");
+  // const title = titleCase(subject);
   const body = {
     "Messages": [
       {
@@ -1083,9 +972,9 @@ async function sendMail(files: string[]) {
           "Name": "Owen",
         },
         "To": toArray,
-        "Subject": "Your Daily Clips " + attachments[0].Filename,
+        "Subject": title,
         "TextPart":
-          "Hi, this is your daily clips. Please check the attachment for more details.",
+          `Hi, \n\nThis is ${title}. Please check the attachment for more details.\n\n`,
         "Attachments": attachments,
       },
     ],
