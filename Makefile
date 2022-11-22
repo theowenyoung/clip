@@ -43,6 +43,6 @@ day:
 serveday:
 	deno run -A ./cli.ts --serve --day=$(day)
 
-.Phony: mail
-mail:
-	deno run -A ./cli.ts --yesterday --mail
+.Phony: kindle
+kindle:
+	deno run -A ./cli.ts --today --kindle

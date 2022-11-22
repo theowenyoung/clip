@@ -114,6 +114,7 @@ async function main() {
       "lastweek",
       "serve",
       "archive",
+      "kindle",
       "key",
       "mail",
     ],
@@ -702,6 +703,13 @@ ${body}
       // send mail
       if (flags.mail) {
         await sendMail([epubNewPath], `Owen's Clip ${key} Updates`);
+      } else if (flags.kindle) {
+        const time = formatBeijing(now, "HH:mm");
+        await sendMail(
+          [epubNewPath],
+          `Instant ${key} ${time}`,
+          Deno.env.get("KINDLE_EMAIL"),
+        );
       }
     }
     // copy all html files to distDir
@@ -945,7 +953,7 @@ async function getAllContacts() {
   return data.Data;
 }
 
-async function sendMail(files: string[], title: string) {
+async function sendMail(files: string[], title: string, email?: string) {
   const attachments = [];
 
   for (const file of files) {
@@ -965,15 +973,25 @@ async function sendMail(files: string[], title: string) {
     console.warn(`No files to send`);
     return;
   }
+  let toArray;
 
-  const contacts = await getAllContacts();
-
-  const toArray = contacts.map((contact: Record<string, string>) => {
-    return {
-      Email: contact.Email,
-      Name: contact.Name || contact.Email.split("@")[0],
-    };
-  });
+  if (email) {
+    // split ,
+    toArray = email.split(",").map((e) => e.trim()).map((item) => {
+      return {
+        "Email": item,
+        "Name": item.split("@")[0],
+      };
+    });
+  } else {
+    const contacts = await getAllContacts();
+    let toArray = contacts.map((contact: Record<string, string>) => {
+      return {
+        Email: contact.Email,
+        Name: contact.Name || contact.Email.split("@")[0],
+      };
+    });
+  }
 
   const username = Deno.env.get("MJ_APIKEY_PUBLIC")!;
   const password = Deno.env.get("MJ_APIKEY_PRIVATE")!;
