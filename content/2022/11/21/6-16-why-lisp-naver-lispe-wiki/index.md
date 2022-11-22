@@ -8,21 +8,13 @@ extra:
   source: https://github.com/naver/lispe/wiki/6.16-Why-Lisp
   hostname: github.com
   author: naver
-  original_title: "6.16 Why Lisp · naver/lispe Wiki"
+  original_title: "Why Lisp"
   original_lang: en
 ---
 
-## Why _Lisp_?
-
-## 为什么 _是口齿不清_ ？
-
-[Version française](https://github.com/naver/lispe/wiki/6.16-Pourquoi-Lisp)
-
-[法文版](https://github.com/naver/lispe/wiki/6.16-Pourquoi-Lisp)
-
 _Lisp_ is not dead. For a language born at the end of the 50's, this is a happy but also very surprising fact. The success of [_Clojure_](https://clojure.org/) or the remarkable resistance of [_Common Lisp_](https://fr.wikipedia.org/wiki/Common_Lisp) represent a kind of anomaly in a world dominated by _javascript_ and _Python_... By the way, _javascript_ is in fact a _Lisp_ in disguise.
 
-_Lisp_ 并没有死。 对于一门诞生于 50 年代末的语言来说，这是一个令人高兴但也非常令人惊讶的事实。 的成功 [_Clojure_](https://clojure.org/) 的显着抵抗 [_或Common Lisp_](https://fr.wikipedia.org/wiki/Common_Lisp) 主导的世界中的一种反常现象 _代表了在由javascript_ 和 _Python_ ……顺便说一句， _javascript_ 实际上是伪装的 _Lisp_ 。
+_Lisp_ 并没有死。 对于一门诞生于 50 年代末的语言来说，这是一个令人高兴但也非常令人惊讶的事实。 的成功 [_Clojure_](https://clojure.org/) 的显着抵抗 [_或 Common Lisp_](https://fr.wikipedia.org/wiki/Common_Lisp) 主导的世界中的一种反常现象 _代表了在由 javascript_ 和 _Python_ ……顺便说一句， _javascript_ 实际上是伪装的 _Lisp_ 。
 
 Well, _Lisp_ is not dead, and since the _proof has to be in the pudding_, we will show how our own [_LispE_](https://github.com/naver/lispe) interpreter was implemented.
 
@@ -95,7 +87,7 @@ And all this is based on a fundamental notion in compilation theory: _the abstra
 
 One of the most important steps, when compiling a sequence of instructions in a language like _Python_ or _C++_, is to reduce everything to trees.
 
-等语言编译指令序列时，最重要的步骤之一 _在使用Python_ 或 _C++_ 是将所有内容简化为树。
+等语言编译指令序列时，最重要的步骤之一 _在使用 Python_ 或 _C++_ 是将所有内容简化为树。
 
 The reason for this is very simple, a tree is the best way to express the relationships that the different objects have with each other in a program:
 
@@ -105,10 +97,10 @@ Generally, a compiler or interpreter takes the above expression and puts it thro
 
 通常，编译器或解释器采用上述表达式并对其进行一系列转换：
 
--   tokenization
--   代币化
--   reorganization in the form of a tree via a formal grammar (BNF)
--   通过形式语法 (BNF) 以树的形式重组
+- tokenization
+- 代币化
+- reorganization in the form of a tree via a formal grammar (BNF)
+- 通过形式语法 (BNF) 以树的形式重组
 
 Tokenization as its name indicates consists in cutting the string into as many autonomous units (_tokens_):
 
@@ -127,7 +119,7 @@ In _Lisp_, tokenisation is reduced to identifying parentheses and spaces.
 在 _Lisp_ 中，标记化被简化为识别括号和空格。
 
 ```lisp
-(setq toto (- (+ 10 a) 20)); becomes (,setq,toto,(,-,(,+,10,a,),20,),) 
+(setq toto (- (+ 10 a) 20)); becomes (,setq,toto,(,-,(,+,10,a,),20,),)
 ```
 
 But above all, the fundamental difference is the construction of the tree. If we take our _Python_ expression, the corresponding tree is as follows:
@@ -273,7 +265,7 @@ As we can see, the syntax remains the same.
 
 Moreover, if we stay in the realm of legend, when engineers were asked to produce, in a few days, a new language for the Web, their first version looked like _Lisp_. Which the managers disliked, so they were asked to correct their copy, which gave the version of _javascript_ that we know today.
 
-此外，如果我们停留在传奇领域，当工程师被要求在几天内开发一种新的 Web 语言时，他们的第一个版本看起来像 _Lisp_ 。 经理们不喜欢，所以他们被要求更正他们的副本，这给了 _的javascript版本。_ 我们今天所知道
+此外，如果我们停留在传奇领域，当工程师被要求在几天内开发一种新的 Web 语言时，他们的第一个版本看起来像 _Lisp_ 。 经理们不喜欢，所以他们被要求更正他们的副本，这给了 _的 javascript 版本。_ 我们今天所知道
 
 The interest of _Lisp_ is that it makes it possible to experiment with new operators or new features without having to re-implement the language grammar each time. Many concepts in computer science, starting with object programming, started with implementations in _Lisp_.
 
@@ -301,7 +293,7 @@ I program in _C++_.
 
 I know that the language has a bad reputation and some people advised me to switch to _Rust_. But, after 30 years of practice, I feel I have a certain familiarity with a language whose performances are no longer to be demonstrated.
 
-我知道该语言名声不好，有些人建议我改用 _Rust_ 。 但是，经过30年的实践，我觉得我对一门表演不再需要展示的语言有了一定的熟悉。
+我知道该语言名声不好，有些人建议我改用 _Rust_ 。 但是，经过 30 年的实践，我觉得我对一门表演不再需要展示的语言有了一定的熟悉。
 
 Because of course, when you make your own interpreter, you expect a certain efficiency in terms of compilation and execution. _C++_ allows you to tickle the processor at the edge of the metal while manipulating very high level abstractions. But the price to pay is sometimes quite heavy, because the language is tortuous and often tricky, not to say _deceitful_.
 
@@ -309,7 +301,7 @@ Because of course, when you make your own interpreter, you expect a certain effi
 
 The purpose of this blog is to show how one can build a [_Lisp_](https://github.com/naver/lispe) interpreter in _C++_, which is directly inspired by the _functional philosophy of Lisp_.
 
-这个博客的目的是展示如何 [_中构建一个Lisp_](https://github.com/naver/lispe) 解释器 _在C++_ ，它直接受到 _Lisp 函数哲学的_ 启发。
+这个博客的目的是展示如何 [_中构建一个 Lisp_](https://github.com/naver/lispe) 解释器 _在 C++_ ，它直接受到 _Lisp 函数哲学的_ 启发。
 
 It's like _putting the code into a programmatic abyss_ in a way...
 
@@ -353,7 +345,7 @@ long factorial(long x) {
 
 In other words, we can design a _C++_ programming which is inspired by _Lisp_.
 
-换句话说，我们可以设计一个 _启发的C++_ 程序 _受Lisp_ 。
+换句话说，我们可以设计一个 _启发的 C++_ 程序 _受 Lisp_ 。
 
 And it has some advantages...
 
@@ -389,7 +381,7 @@ For our vector to offer the same flexibility, experienced readers will have imme
 
 Thus, if we derive from _Element_, an _Operator_ class or an _Integer_ class, we will be able to store operators or integers in the same structure. If moreover, we derive the _List_ class from _Element_, we can then build embedded representations without any limit.
 
-因此，如果我们从 _Element_ 、 _Operator_ 类或 _Integer_ 类派生，我们将能够在同一结构中存储运算符或整数。 派生 _List_ 类 _此外，如果我们从Element_ ，我们就可以无限制地构建嵌入式表示。
+因此，如果我们从 _Element_ 、 _Operator_ 类或 _Integer_ 类派生，我们将能够在同一结构中存储运算符或整数。 派生 _List_ 类 _此外，如果我们从 Element_ ，我们就可以无限制地构建嵌入式表示。
 
 #### The _Eval_ function
 
@@ -441,10 +433,10 @@ And this is where things get interesting. Each value in the interpreter is assoc
 
 这就是事情变得有趣的地方。 解释器中的每个值都与一个引用计数器相关联，当该值存储在变量或容器中时，该计数器加 1。 当调用返回结果的函数时，可能会发生两件事：
 
--   The value comes from the application of a function
--   值来自函数的应用
--   The value was returned by a variable or a container
--   该值由变量或容器返回
+- The value comes from the application of a function
+- 值来自函数的应用
+- The value was returned by a variable or a container
+- 该值由变量或容器返回
 
 Now if we look closely at the loop, we see that the value of `v` is _systematically_ released at each iteration, _except_ for the last statement in `elements`. For values saved in a variable or a container, the call of this function has no impact. For the others, it destroys them or saves them in data pools.
 
@@ -527,12 +519,12 @@ Thus, we find in this approach, the fundamental properties of functional program
 
 因此，我们在这种方法中发现了函数式编程的基本属性。
 
--   Everything is a function call (here reduced to an _Eval_ call for each object)
--   一切都是函数调用（这里简化为 _的Eval调用）_ 对每个对象
--   Immutability of objects
--   对象的不变性
--   No side effects.
--   无副作用。
+- Everything is a function call (here reduced to an _Eval_ call for each object)
+- 一切都是函数调用（这里简化为 _的 Eval 调用）_ 对每个对象
+- Immutability of objects
+- 对象的不变性
+- No side effects.
+- 无副作用。
 
 ### Threads
 
@@ -575,7 +567,7 @@ The _Element_ class contains the list of basic numerical methods of the language
 virtual Element* plus(Element* e);
 virtual Element* minus(Element* e);
 virtual Element* multiply(Element* e);
-virtual Element* divide(Element* e);    
+virtual Element* divide(Element* e);
 ```
 
 So for the _Integer_, _Floating_ or _String_ classes, you just have to overload them to get the desired behavior.
@@ -604,7 +596,7 @@ list: [Operator(+), Integer(10), Integer(20), Integer(30)]
 
 _Operator_ and _Integer_ are instances of classes derived from: _Element_.
 
-_Operator_ 和 _Integer_ 的类的实例 _是派生自Element_ 。
+_Operator_ 和 _Integer_ 的类的实例 _是派生自 Element_ 。
 
 Let's override the `plus` method in our _Index_ class:
 
@@ -676,7 +668,7 @@ Element* List::Eval() {
 
 So, each time the _Eval_ method is executed from a _List_ object, we will be able to execute the function placed at position 0 in our list.
 
-因此，每次 _对象执行Eval_ 方法 _从List_ 时，我们将能够执行位于列表中位置 0 的函数。
+因此，每次 _对象执行 Eval_ 方法 _从 List_ 时，我们将能够执行位于列表中位置 0 的函数。
 
 And here is where the whole operation is revealed. If an instance in the list is an atomic value, `Eval` will return the instance itself. If, on the other hand, it is a list, we will recursively call the method above which will return the corresponding result.
 
@@ -704,7 +696,7 @@ First, I want to stress how efficient the _interpreter_ produced with this metho
 
 Some people might complain that _Lisp_ is too much of a niche language to engage in the effort of understanding how it was implemented. However, what is really important in this article is that, if you create your own syntax and implement a grammar to turn it into a _tree_, you can use the underlying interpreter code in _C++_ without any real modification. In fact, we have also implemented another programming language: [_TAMGU탐구_](https://github.com/naver/tamgu), which follows the same philosophy and still implements a language that is very similar to _Python_.
 
-有些人可能会抱怨 _Lisp_ 是一种过于小众的语言，无法参与了解它是如何实现的。 然而，本文真正重要的是，如果您创建自己的语法并实现一个语法以将其变成 _树_ 中的底层解释器代码 _即可使用C++_ ，则无需任何实际修改 。 事实上，我们还实现了另一种编程语言： [_TAMGU탐구_](https://github.com/naver/tamgu) 非常相似的语言 _，它遵循同样的理念，仍然实现了一种与Python_ 。
+有些人可能会抱怨 _Lisp_ 是一种过于小众的语言，无法参与了解它是如何实现的。 然而，本文真正重要的是，如果您创建自己的语法并实现一个语法以将其变成 _树_ 中的底层解释器代码 _即可使用 C++_ ，则无需任何实际修改 。 事实上，我们还实现了另一种编程语言： [_TAMGU탐구_](https://github.com/naver/tamgu) 非常相似的语言 _，它遵循同样的理念，仍然实现了一种与 Python_ 。
 
 _Lisp_ might sound like some old language lost in the dark age of computer science, but when you implement a _Lisp_ interpreter, what you actually create is a universal interpreter, which can run many of the programming languages in the world...
 

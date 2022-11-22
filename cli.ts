@@ -36,6 +36,17 @@ enum Day {
   Fri,
   Sat,
 }
+interface FrontMatter {
+  title: string;
+  date: string;
+  updated?: string;
+  draft?: boolean;
+  taxonomies: {
+    tags?: string[];
+    categories?: string[];
+  };
+  extra: Record<string, string>;
+}
 export interface WeekOfYear {
   year: number;
   week: number;
@@ -54,6 +65,7 @@ interface Chapter {
   updated: Date;
   content: string;
   day: string;
+  frontMatter: FrontMatter;
 }
 interface OutputOptions {
   epub?: Record<string, unknown>;
@@ -307,17 +319,7 @@ async function main() {
         // extract front matter
         const parsed = extract(file);
         const { body } = parsed;
-        const attrs = parsed.attrs as {
-          title: string;
-          date: string;
-          updated?: string;
-          draft?: boolean;
-          taxonomies: {
-            tags?: string[];
-            categories?: string[];
-          };
-          extra: Record<string, string>;
-        };
+        const attrs = parsed.attrs as FrontMatter;
         if (attrs.draft) {
           continue;
         }
@@ -337,6 +339,7 @@ async function main() {
           category,
           content: body,
           day: formatBeijing(new Date(attrs.date), "yyyy-MM-dd"),
+          frontMatter: attrs,
         };
         // add to archive
         if (attrs.date) {
@@ -374,7 +377,28 @@ async function main() {
     const allFiles: string[] = [];
     for (const chapter of chapters) {
       // console.log(chapter.path);
-      const markdownContent = `# ${chapter.title}\n\n${chapter.content}`;
+      let markdownContent = `# ${chapter.title}\n\n`;
+      // if title is not the same as original title
+      if (chapter.frontMatter) {
+        const title = chapter.frontMatter.title;
+        const extra = chapter.frontMatter.extra;
+        if (title && extra && extra.original_title) {
+          // is same
+          if (title !== extra.original_title) {
+            markdownContent += `原文标题：**${extra.original_title}**\n\n`;
+          }
+        }
+      }
+
+      markdownContent += chapter.content;
+
+      // add original url
+      if (chapter.frontMatter) {
+        const extra = chapter.frontMatter.extra;
+        if (extra && extra.source) {
+          markdownContent += `\n\n原文链接：[${extra.source}](${extra.source})`;
+        }
+      }
       targetMarkdownFiles[chapter.relativePath] = markdownContent;
       if (!allFiles.includes(chapter.relativePath)) {
         allFiles.push(chapter.relativePath);
@@ -612,7 +636,7 @@ ${subSectionsMarkdown}
           const parsed = extract(dayIntroContent);
           const { body } = parsed;
           newSectionContent += `
-## 当日笔记 ([原文](https://www.owenyoung.com/blog/journals/${section.title}/))
+## 当日笔记 ([博客原文](https://www.owenyoung.com/blog/journals/${section.title}/))
 
 ${body}
 `;
