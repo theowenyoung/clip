@@ -6,6 +6,7 @@ import * as path from "https://deno.land/std@0.159.0/path/mod.ts";
 import * as posixPath from "https://deno.land/std@0.159.0/path/posix.ts";
 import { stringify } from "https://deno.land/std@0.159.0/encoding/toml.ts";
 import { gfm } from "https://esm.sh/micromark-extension-gfm@2.0.1";
+import { encode } from "https://deno.land/std@0.165.0/encoding/base64.ts";
 import {
   gfmFromMarkdown,
   gfmToMarkdown,
@@ -18,6 +19,7 @@ import { default as groupBy } from "https://deno.land/x/lodash@4.17.15-es/groupB
 import { serve } from "https://deno.land/std@0.159.0/http/server.ts";
 import { serveDir } from "https://deno.land/std@0.159.0/http/file_server.ts";
 import { parse } from "https://deno.land/std@0.159.0/flags/mod.ts";
+import { Base64 } from "https://deno.land/x/bb64@1.1.0/mod.ts";
 export const SECOND = 1e3;
 export const MINUTE = SECOND * 60;
 export const HOUR = MINUTE * 60;
@@ -99,6 +101,7 @@ async function main() {
       "serve",
       "archive",
       "key",
+      "mail",
     ],
     string: ["day", "week"],
   });
@@ -764,6 +767,10 @@ ${body}
         cwd: htmlPath,
       });
       await zipProcess.status();
+      // send mail
+      if (flags.mail) {
+        await sendMail([epubNewPath]);
+      }
     }
     // copy all html files to distDir
     await fs.copy(htmlPath, distDir, { overwrite: true });
@@ -988,4 +995,90 @@ export function startDateOfWeek(date: Date, start_day = 1): Date {
   date.setUTCSeconds(0);
   date.setUTCMilliseconds(0);
   return date;
+}
+
+async function getAllContacts() {
+  const username = Deno.env.get("MJ_APIKEY_PUBLIC")!;
+  const password = Deno.env.get("MJ_APIKEY_PRIVATE")!;
+  const url =
+    "https://api.mailjet.com/v3/REST/contact?ContactsList=17669&Limit=200";
+  const headers = new Headers();
+  headers.set("Content-Type", "application/json");
+  headers.set("Authorization", "Basic " + encode(username + ":" + password));
+  const response = await fetch(url, {
+    method: "GET",
+    headers,
+  });
+  const data = await response.json();
+  return data.Data;
+}
+
+async function sendMail(files: string[]) {
+  const attachments = [];
+
+  for (const file of files) {
+    // const fileContent = await Deno.readFile(file);
+    // const base64Encoded = encode(fileContent);
+    const base64Encoded = Base64.fromFile(file).toString();
+
+    const fileBasename = path.basename(file);
+    const attachment = {
+      "ContentType": "application/epub+zip",
+      "Filename": fileBasename,
+      "Base64Content": base64Encoded,
+    };
+    attachments.push(attachment);
+  }
+  if (attachments.length < 1) {
+    console.warn(`No files to send`);
+    return;
+  }
+  console.log("attachments", attachments);
+
+  const contacts = await getAllContacts();
+
+  const toArray = contacts.map((contact: Record<string, string>) => {
+    return {
+      Email: contact.Email,
+      Name: contact.Name || contact.Email.split("@")[0],
+    };
+  });
+
+  const username = Deno.env.get("MJ_APIKEY_PUBLIC")!;
+  const password = Deno.env.get("MJ_APIKEY_PRIVATE")!;
+
+  const url = "https://api.mailjet.com/v3.1/send";
+  const headers = new Headers();
+  headers.set("Content-Type", "application/json");
+  headers.set("Authorization", "Basic " + encode(username + ":" + password));
+  const body = {
+    "Messages": [
+      {
+        "From": {
+          "Email": "owen@owenyoung.com",
+          "Name": "Owen",
+        },
+        "To": toArray,
+        "Subject": "Your Daily Clips " + attachments[0].Filename,
+        "TextPart":
+          "Hi, this is your daily clips. Please check the attachment for more details.",
+        "Attachments": attachments,
+      },
+    ],
+  };
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+  });
+  if (response.ok) {
+    const data = await response.text();
+    console.log("send mail success");
+    console.log(data);
+  } else {
+    console.error("send mail fail");
+    console.error(response.status);
+    console.error(await response.text());
+  }
 }
