@@ -68,6 +68,7 @@ interface BookConfig {
 interface SubSection {
   title: string;
   path: string;
+  relativePathToSection: string;
 }
 interface SummarySection {
   title: string;
@@ -82,7 +83,7 @@ interface Rule {
 }
 interface Book {
   config: BookConfig;
-  introduction: SummarySection;
+  introduction?: SummarySection;
   summary: SummarySection[];
 }
 
@@ -350,10 +351,6 @@ async function main() {
           });
         }
         books[`${key}`] = {
-          introduction: {
-            title: "简介",
-            path: "README.md",
-          },
           summary,
           config: {
             book: {
@@ -575,10 +572,15 @@ async function main() {
             if (!summarySection.subSections) {
               summarySection.subSections = [];
             }
+            const relativePathToSection = path.relative(
+              path.dirname(summarySection.path),
+              relativePathToSummary,
+            );
             // TODO
             summarySection.subSections.push({
               title: chapter.title,
               path: relativePathToSummary,
+              relativePathToSection,
               // subSections: groups[day].map((chapter: Chapter) => {
               //   const relativePathToSummary = chapter.relativePath.replace(
               //     /^content\//,
@@ -610,17 +612,24 @@ async function main() {
         const yearStr = day.slice(0, 4);
         const monthStr = day.slice(4, 6);
         const dayStr = day.slice(6, 8);
+        const daySummaryPath = `${yearStr}/${monthStr}/${dayStr}/index.md`;
         book.summary.push({
           title: yearStr + "-" + monthStr + "-" + dayStr,
-          path: `${yearStr}/${monthStr}/${dayStr}/index.md`,
+          path: daySummaryPath,
           subSections: groups[day].map((chapter: Chapter) => {
             const relativePathToSummary = chapter.relativePath.replace(
               /^content\//,
               "",
             );
+            const relativePathToSection = path.relative(
+              path.dirname(daySummaryPath),
+              relativePathToSummary,
+            );
+
             return {
               title: chapter.title,
               path: relativePathToSummary,
+              relativePathToSection,
             };
           }),
         });
@@ -628,7 +637,9 @@ async function main() {
     }
 
     let summary = `# Summary\n\n`;
-    summary += `[${book.introduction.title}](${book.introduction.path})\n\n`;
+    if (book.introduction) {
+      summary += `[${book.introduction.title}](${book.introduction.path})\n\n`;
+    }
     for (const section of book.summary) {
       summary += `- [${section.title}](${section.path})\n`;
 
@@ -683,7 +694,7 @@ async function main() {
 
         for (const subSection of section.subSections) {
           subSectionsMarkdown +=
-            `- [${subSection.title}](/${subSection.path})\n`;
+            `- [${subSection.title}](${subSection.relativePathToSection})\n`;
         }
 
         let sectionContent = `# ${section.title}\n\n`;

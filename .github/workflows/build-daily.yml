@@ -29,6 +29,9 @@ jobs:
         id: build
         run: BLOG_PATH=./blog make yesterday
         continue-on-error: true
+        env:
+          MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}
+          MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE }}
       - name: make release if build success
         if: steps.build.outcome == 'success'
         uses: "softprops/action-gh-release@v1"

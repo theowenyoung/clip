@@ -23,6 +23,9 @@ today:
 yesterday:
 	deno run -A ./cli.ts --yesterday
 
+.Phony: yesterdaymail
+yesterdaymail:
+	deno run -A ./cli.ts --yesterday --mail
 .Phony: lastweek
 lastweek:
 	deno run -A ./cli.ts --lastweek
