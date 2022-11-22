@@ -968,7 +968,7 @@ async function sendMail(files: string[], title: string) {
     "Messages": [
       {
         "From": {
-          "Email": "owen@owenyoung.com",
+          "Email": "bot@owenyoung.com",
           "Name": "Owen",
         },
         "To": toArray,
