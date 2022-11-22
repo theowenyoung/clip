@@ -11,7 +11,7 @@ on:
         default: ""
         description: "tag to release"
         type: string
-        required: true
+        required: false
 jobs:
   build-deploy:
     concurrency: build-daily-book
@@ -37,7 +37,7 @@ jobs:
         run: BLOG_PATH=./blog deno run -A ./cli.ts ${{ github.event.inputs.args }}
         continue-on-error: true
       - name: make release if build success
-        if: steps.build.outcome == 'success'
+        if: steps.build.outcome == 'success' && github.event.inputs.tag != ''
         uses: "softprops/action-gh-release@v1"
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
