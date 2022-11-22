@@ -662,21 +662,34 @@ async function main() {
     // copy book assets
     const bookAssetsPath = path.join("templates", keyType);
 
-    for await (
-      const asset of fs.walk(bookAssetsPath, {
-        includeDirs: false,
-      })
-    ) {
-      if (asset.isFile && !asset.name.startsWith(".")) {
-        const assetRelativePath = path.relative(bookAssetsPath, asset.path);
-        const assetDistPath = path.join(
-          bookSourceFileDist,
-          bookConfig.book.src as string,
-          assetRelativePath,
-        );
-        await fs.ensureDir(path.dirname(assetDistPath));
-        await Deno.copyFile(asset.path, assetDistPath);
+    // is exists
+    if (fs.existsSync(bookAssetsPath)) {
+      for await (
+        const asset of fs.walk(bookAssetsPath, {
+          includeDirs: false,
+        })
+      ) {
+        if (asset.isFile && !asset.name.startsWith(".")) {
+          const assetRelativePath = path.relative(bookAssetsPath, asset.path);
+          const assetDistPath = path.join(
+            bookSourceFileDist,
+            bookConfig.book.src as string,
+            assetRelativePath,
+          );
+          await fs.ensureDir(path.dirname(assetDistPath));
+          await Deno.copyFile(asset.path, assetDistPath);
+        }
       }
+    } else {
+      // copy cover.jpg
+      const coverPath = path.join("templates", "cover.jpg");
+      const coverDistPath = path.join(
+        bookSourceFileDist,
+        bookConfig.book.src as string,
+        "cover.jpg",
+      );
+      await fs.ensureDir(path.dirname(coverDistPath));
+      await Deno.copyFile(coverPath, coverDistPath);
     }
 
     // add summary sections to section file

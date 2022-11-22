@@ -27,7 +27,7 @@ jobs:
       - run: make install
       - name: Build yesterday book
         id: build
-        run: BLOG_PATH=./blog make yesterday
+        run: BLOG_PATH=./blog make yesterdaymail
         continue-on-error: true
         env:
           MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}

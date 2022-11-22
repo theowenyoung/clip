@@ -4,8 +4,8 @@ on:
   # push:
   #   branches:
   #     - main
-  schedule:
-    - cron: "16 8 * * SUN"
+  # schedule:
+  #   - cron: "16 8 * * SUN"
 jobs:
   build-deploy:
     concurrency: build-daily-book
@@ -32,6 +32,9 @@ jobs:
         id: build
         run: BLOG_PATH=./blog make lastweek
         continue-on-error: true
+        env:
+          MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}
+          MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE }}
       - name: make release if build success
         if: steps.build.outcome == 'success'
         uses: "softprops/action-gh-release@v1"
