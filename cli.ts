@@ -509,9 +509,7 @@ async function main() {
     // for archive book gropu by year and month
     if (key === "archive") {
       const groups = groupBy(chapters, (chapter: Chapter) => {
-        return chapter.date.getUTCFullYear() + "" +
-          addZero(chapter.date.getUTCMonth() + 1) +
-          addZero(chapter.date.getUTCDate());
+        return formatBeijing(chapter.date, "yyyyMMdd");
       });
       const days = Object.keys(groups).sort((a, b) => {
         return parseInt(b) - parseInt(a);
