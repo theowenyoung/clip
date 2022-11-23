@@ -82,6 +82,8 @@ interface SubSection {
   title: string;
   path: string;
   relativePathToSection: string;
+  source?: string;
+  originalTitle?: string;
 }
 interface SummarySection {
   title: string;
@@ -182,7 +184,7 @@ async function main() {
       },
     },
     markdown: {
-      enable: true,
+      enable: false,
     },
   };
   // if env
@@ -485,11 +487,16 @@ async function main() {
               path.dirname(summarySection.path),
               relativePathToSummary,
             );
+            const source = chapter.frontMatter?.extra?.source;
+            const originalTitle = chapter.frontMatter?.extra?.original_title;
+
             // TODO
             summarySection.subSections.push({
               title: chapter.title,
               path: relativePathToSummary,
               relativePathToSection,
+              source,
+              originalTitle,
               // subSections: groups[day].map((chapter: Chapter) => {
               //   const relativePathToSummary = chapter.relativePath.replace(
               //     /^content\//,
@@ -532,11 +539,15 @@ async function main() {
               path.dirname(daySummaryPath),
               relativePathToSummary,
             );
+            const source = chapter.frontMatter?.extra?.source;
 
+            const originalTitle = chapter.frontMatter?.extra?.original_title;
             return {
               title: chapter.title,
               path: relativePathToSummary,
               relativePathToSection,
+              source,
+              originalTitle,
             };
           }),
         });
@@ -605,6 +616,7 @@ async function main() {
         // check blog folder is there is links markdown, if not, create one
         const dayIntroPath = path.join(blogRepoPath, section.title + ".md");
         let newSectionContent = "";
+        let dayNoteContent = "# Notes\n\n";
         const sectionPath = path.join(
           bookSourceFileDist,
           bookConfig.book.src as string,
@@ -615,8 +627,21 @@ async function main() {
         for (const subSection of section.subSections) {
           subSectionsMarkdown +=
             `- [${subSection.title}](${subSection.relativePathToSection})\n`;
+
+          dayNoteContent += `- [${subSection.title}](${subSection.source})`;
+          if (subSection.title !== subSection.originalTitle) {
+            dayNoteContent += ` ([双语机器译文](https://clip.owenyoung.com/${
+              subSection.path.slice(0, -8)
+            }))`;
+          }
+          dayNoteContent += "\n";
         }
 
+        await fs.ensureDir(path.dirname(sectionPath));
+        await Deno.writeTextFile(
+          path.join(path.dirname(sectionPath), "README.md"),
+          dayNoteContent,
+        );
         let sectionContent = `# ${section.title}\n\n`;
         try {
           sectionContent = await Deno.readTextFile(sectionPath);
