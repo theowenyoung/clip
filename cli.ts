@@ -630,7 +630,7 @@ async function main() {
 
           dayNoteContent += `- [${subSection.title}](${subSection.source})`;
           if (subSection.title !== subSection.originalTitle) {
-            dayNoteContent += ` ([双语机器译文](https://clip.owenyoung.com/${
+            dayNoteContent += ` ([双语机翻译文](https://clip.owenyoung.com/${
               subSection.path.slice(0, -8)
             }))`;
           }
