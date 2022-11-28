@@ -184,7 +184,7 @@ async function main() {
       },
     },
     markdown: {
-      enable: false,
+      enable: true,
     },
   };
   // if env
@@ -195,20 +195,6 @@ async function main() {
       "content/blog/journals",
     );
   }
-  if (!isServe) {
-    outputOptions = {
-      ...outputOptions,
-      epub: {
-        "cover-image": "cover.jpg",
-        "command": binDir + "/mdbook-epub",
-        "use-default-css": false,
-      },
-      // pdf: {
-      //   enable: true,
-      //   "command": binDir + "/mdbook-pdf",
-      // },
-    };
-  }
 
   const books: Record<string, Book> = {};
   const allChapters: Chapter[] = [];
@@ -217,6 +203,20 @@ async function main() {
   if (daysBooksKeys.length > 0) {
     const keys = Object.keys(dayBooks);
     for (const key of keys) {
+      if (!isServe && key !== "archive") {
+        outputOptions = {
+          ...outputOptions,
+          epub: {
+            "cover-image": "cover.jpg",
+            "command": binDir + "/mdbook-epub",
+            "use-default-css": false,
+          },
+          // pdf: {
+          //   enable: true,
+          //   "command": binDir + "/mdbook-pdf",
+          // },
+        };
+      }
       const days = dayBooks[key];
       // check if the day exists
 
@@ -680,6 +680,7 @@ ${body}
     const bookTomlPath = path.join(bookSourceFileDist, "book.toml");
     await Deno.writeTextFile(bookTomlPath, bookToml);
     console.log(`build book ${key} source files success`);
+    console.log("bookSourceFileDist", bookSourceFileDist);
 
     const p = Deno.run({
       cmd: ["./bin/mdbook", "build", bookSourceFileDist],
