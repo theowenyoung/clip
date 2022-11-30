@@ -1009,7 +1009,8 @@ async function sendMail(files: string[], title: string, email?: string) {
     });
   } else {
     const contacts = await getAllContacts();
-    let toArray = contacts.map((contact: Record<string, string>) => {
+
+    toArray = contacts.map((contact: Record<string, string>) => {
       return {
         Email: contact.Email,
         Name: contact.Name || contact.Email.split("@")[0],
@@ -1030,6 +1031,7 @@ async function sendMail(files: string[], title: string, email?: string) {
   // replace - to space
   // const subject = filenameWithoutExt.replace(/-/g, " ");
   // const title = titleCase(subject);
+  console.log("toArray", toArray);
   const body = {
     "Messages": [
       {
