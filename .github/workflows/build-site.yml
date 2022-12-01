@@ -27,7 +27,10 @@ jobs:
           key: ${{ runner.os }}-deno-${{ hashFiles('cli.ts') }}
       - run: make install
       - name: Build Book
-        run: JOURNAL_PATH=./blog make build
+        run: make build
+        env:
+          JOURNAL_PATH: ./blog
+          JOURNAL_URL: https://www.owenyoung.com/blog/journals/
       - name: Publish Archive
         uses: cloudflare/pages-action@1
         with:

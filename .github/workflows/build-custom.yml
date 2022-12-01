@@ -34,11 +34,13 @@ jobs:
       - run: make install
       - name: Build lastweek book
         id: build
-        run: JOURNAL_PATH=./blog deno run -A ./cli.ts ${{ github.event.inputs.args }}
+        run: deno run -A ./cli.ts ${{ github.event.inputs.args }}
         continue-on-error: true
         env:
           MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}
           MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE }}
+          JOURNAL_PATH: ./blog
+          JOURNAL_URL: https://www.owenyoung.com/blog/journals/
       - name: make release if build success
         if: steps.build.outcome == 'success' && github.event.inputs.tag != ''
         uses: "softprops/action-gh-release@v1"

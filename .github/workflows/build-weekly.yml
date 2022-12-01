@@ -27,11 +27,13 @@ jobs:
       - run: make install
       - name: Build lastweek book
         id: build
-        run: JOURNAL_PATH=./blog make lastweek
+        run: make lastweek
         continue-on-error: true
         env:
           MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}
           MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE }}
+          JOURNAL_PATH: ./blog
+          JOURNAL_URL: https://www.owenyoung.com/blog/journals/
       - name: make release if build success
         if: steps.build.outcome == 'success'
         uses: "softprops/action-gh-release@v1"

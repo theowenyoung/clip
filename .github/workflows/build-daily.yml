@@ -27,17 +27,19 @@ jobs:
       - run: make install
       - name: Build yesterday book
         id: build
-        run: JOURNAL_PATH=./blog make yesterdaymail
+        run: make yesterdaymail
         continue-on-error: true
         env:
           MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}
           MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE }}
+          JOURNAL_PATH: ./blog
+          JOURNAL_URL: https://www.owenyoung.com/blog/journals/
       - name: make release if build success
         if: steps.build.outcome == 'success'
         uses: "softprops/action-gh-release@v1"
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: true
+          prerelease: false
           tag_name: "daily-${{ env.YESTERDAY }}"
           generate_release_notes: false
           body: |
