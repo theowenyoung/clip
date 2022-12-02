@@ -13,6 +13,10 @@
 
 如果你也想按照该项目的方式来收集和发布你的网页，我已经将这个项目抽出来一个模板，请参见模板项目的[说明文档](https://github.com/theowenyoung/clip-template)进行操作。
 
+## RSS 订阅
+
+可以通过 RSS 订阅最新的文章： <https://clip.owenyoung.com/feed.xml>
+
 ## 发送到 Kindle 邮箱的每日 Epub 电子书
 
 在这个 Github 的 Repo 里有一个每日任务: <https://github.com/theowenyoung/clip/blob/main/.github/workflows/build-daily.yml>，它会自动把每日更新的文章打包成一个 epub 电子书，然后推送到我 Kindle 绑定的邮箱。

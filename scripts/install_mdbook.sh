@@ -10,10 +10,8 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     tar -xf /tmp/mdbook-epub-x86_64-unknown-linux-musl.tar.gz -C $BIN_DIR
     curl -OL https://github.com/rust-lang/mdBook/releases/download/v0.4.22/mdbook-v0.4.22-x86_64-unknown-linux-musl.tar.gz
     tar -xf /tmp/mdbook-v0.4.22-x86_64-unknown-linux-musl.tar.gz -C $BIN_DIR
-    curl -OL https://github.com/denoland/deno/releases/download/v1.28.2/deno-x86_64-unknown-linux-gnu.zip
+    curl -OL https://github.com/denoland/deno/releases/download/v1.28.3/deno-x86_64-unknown-linux-gnu.zip
     unzip -o /tmp/deno-x86_64-unknown-linux-gnu.zip -d $BIN_DIR
-    curl -OL https://github.com/theowenyoung/mdbook-rss/releases/download/v0.2.1/mdbook-rss-x86_64-unknown-linux-musl.tar.gz
-    tar -xf /tmp/mdbook-rss-x86_64-unknown-linux-musl.tar.gz -C $BIN_DIR
 
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     # Mac OSX
@@ -22,10 +20,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     unzip -o /tmp/mdbook-epub-x86_64-apple-darwin.zip -d $BIN_DIR
     curl -OL https://github.com/rust-lang/mdBook/releases/download/v0.4.22/mdbook-v0.4.22-x86_64-apple-darwin.tar.gz
     tar -xf /tmp/mdbook-v0.4.21-x86_64-apple-darwin.tar.gz -C $BIN_DIR
-    curl -OL https://github.com/denoland/deno/releases/download/v1.28.2/deno-x86_64-apple-darwin.zip
+    curl -OL https://github.com/denoland/deno/releases/download/v1.28.3/deno-x86_64-apple-darwin.zip
     unzip -o /tmp/deno-x86_64-apple-darwin.zip -d $BIN_DIR
-    curl -OL https://github.com/theowenyoung/mdbook-rss/releases/download/v0.2.1/mdbook-rss-x86_64-apple-darwin.zip
-    unzip -o /tmp/mdbook-rss-x86_64-apple-darwin.zip -d $BIN_DIR
 else
     # not support
     echo "not support this platform"

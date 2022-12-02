@@ -1,15 +1,10 @@
+base_url = "https://clip-template.vercel.app"
 [book]
 title = "Owen's Clip"
 description = "Owen's Clip"
 src = "content"
 language = "zh"
 authors = ["Owen Young"]
-
-[preprocessor.rss]
-enable = true
-files-glob = "**/*"
-command = "../../bin/mdbook-rss"
-url-base = "https://clip-template.vercel.app/"
 
 [output.html]
 base_url = "https://clip.owenyoung.com"
