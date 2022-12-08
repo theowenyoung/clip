@@ -19,7 +19,9 @@ jobs:
             ~/.cache/deno
           key: ${{ runner.os }}-deno-${{ hashFiles('cli.ts') }}
       - name: Get Yestoday Beijin Day
-        run: echo "YESTERDAY=$(deno run cli.ts --yesterday --key)" >> $GITHUB_ENV
+        id: date
+        run: |
+          echo "::set-output name=yesterday::$(deno run cli.ts --yesterday --key)"
       - run: make install
       - name: Build yesterday book
         id: build
@@ -33,10 +35,12 @@ jobs:
       - name: make release if build success
         if: steps.build.outcome == 'success'
         uses: "softprops/action-gh-release@v1"
+        env:
+          YESTERDAY: 
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          tag_name: "daily-${{ env.YESTERDAY }}"
+          tag_name: "daily-${{ steps.date.outputs.yesterday }}"
           generate_release_notes: false
           body: |
             Visit [Online](https://clip-template.vercel.app/).
