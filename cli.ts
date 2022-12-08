@@ -135,9 +135,6 @@ async function main() {
     ],
     string: ["day", "week"],
   });
-  await config({
-    export: true,
-  });
   const isBuildArchive = flags.archive;
   const now = new Date();
   let serveDistDir = "";
@@ -184,6 +181,10 @@ async function main() {
     console.log(keys.join(","));
     return;
   }
+
+  await config({
+    export: true,
+  });
   // console.log("dayBooks", dayBooks);
 
   const workDir = new URL(".", import.meta.url).pathname;
