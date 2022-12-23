@@ -1,5 +1,5 @@
 ---
-title: Opinion | The Great Delusion Behind Twitter - The New York Times
+title: Opinion | 寄希望于Twitter成为世界城市广场背后的幻想 - The New York Times
 date: 2022-12-20T05:21:52.000Z
 updated: 2022-12-20T05:21:52.000Z
 taxonomies:
@@ -12,13 +12,12 @@ extra:
   author: Ezra Klein
   original_title: Opinion | The Great Delusion Behind Twitter
   original_lang: en
-
 ---
 
-Ezra Klein 埃兹拉·克莱因
+Ezra Klein  埃兹拉·克莱因
 
 Dec. 11, 2022  
-2022 年 12 月 11 日  
+2022 年 12 月 11 日
 
 ![People at a demonstration outside the armed forces military recruitment center in Times Square in 1961. Two men carry signs that read, “Quaker witness for peace.”](11klein-la-1-662f-articleLarge.jpg)
 
@@ -33,7 +32,7 @@ For what feels like ages, we’ve been told that Twitter is, or needs to be, the
 多年来，我们一直被告知 Twitter 是或需要成为世界的城市广场。这是 Dick Costolo 在 2013 年担任 Twitter 首席执行官时的台词（“我们认为它是全球城市广场”），而 Twitter 的创始人之一 Jack Dorsey 在 2018 年也使用了它（“人们使用 Twitter 作为数字公共广场”）。现在这句话来自“首席智者”埃隆马斯克（“我收购 Twitter 的原因是因为拥有一个共同的数字城市广场对文明的未来很重要”）。
 
 This metaphor is wrong on three levels.  
-这个比喻在三个层面上是错误的。  
+这个比喻在三个层面上是错误的。
 
 First, there isn’t, can’t be and shouldn’t be a “global town square.” The world needs many town squares, not one. Public spaces are rooted in the communities and contexts in which they exist. This is true, too, for Twitter, which is less a singular entity than a digital multiverse. What Twitter is for [activists in Zimbabwe](https://www.wired.com/story/musk-denial-true-cost-twitter-implosion/) is not what it is for gamers in Britain.
 
