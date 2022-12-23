@@ -7,13 +7,12 @@ taxonomies:
 extra:
   source: https://www.france24.com/en/asia-pacific/20221220-taliban-forbids-university-education-for-afghan-girls-nationwide
   hostname: www.france24.com
-  author: Text by:
   original_title: "Taliban ban university education for Afghan women nationwide"
   original_lang: en
 ---
 
 Issued on: 20/12/2022 - 20:57Modified: 20/12/2022 - 21:10  
-发布日期：20/12/2022 - 20:57 修改时间：20/12/2022 - 21:10  
+发布日期：20/12/2022 - 20:57 修改时间：20/12/2022 - 21:10
 
 Afghanistan's Taliban rulers on Tuesday banned university education for females nationwide, as the hardline Islamists continue to crush women's right to education and freedom.
 
@@ -32,7 +31,7 @@ The spokesman for the ministry, Ziaullah Hashimi, who tweeted the letter, confir
 在推特上发布这封信的该部发言人 Ziaullah Hashimi 在发给法新社的短信中证实了这一命令。
 
 Washington condemned the decision "in the strongest terms."  
-华盛顿“以最强烈的措辞”谴责了这一决定。  
+华盛顿“以最强烈的措辞”谴责了这一决定。
 
 "The Taliban should expect that this decision, which is in contravention to the commitments they have made repeatedly and publicly to their own people, will carry concrete costs for them," State Department spokesman Ned Price told reporters in Washington.
 
@@ -78,8 +77,9 @@ The country was returning to "dark days", added medicine student Rhea in the cap
 
 “当我们希望取得进步时，他们正在将我们从社会中移除，”这位 26 岁的年轻人说。
 
-## 'A fundamental human right'  
-“一项基本人权”  
+## 'A fundamental human right'
+
+“一项基本人权”
 
 The United Nations is "deeply concerned" by the order, said Ramiz Alakbarov, UN chief's deputy special representative for Afghanistan.
 
@@ -117,8 +117,9 @@ Several families interviewed by AFP last month said that coupled with economic p
 
 上个月接受法新社采访的几个家庭表示，加上经济压力，学校禁令意味着通过婚姻来确保女儿的未来比让她们闲在家里更好。
 
-## International pressure  
-国际压力  
+## International pressure
+
+国际压力
 
 Women have also been pushed out of many government jobs -- or are being paid a slashed salary to stay at home. They are also barred from travelling without a male relative, and must cover up outside of the home, ideally with a burqa.
 
