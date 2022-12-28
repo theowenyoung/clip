@@ -21,12 +21,8 @@
 
 在这个 Github 的 Repo 里有一个每日任务: <https://github.com/theowenyoung/clip/blob/main/.github/workflows/build-daily.yml>，它会自动把每日更新的文章打包成一个 epub 电子书，然后推送到我 Kindle 绑定的邮箱。
 
-我在遛狗的时候用 Kindle 再次阅读/朗读双语文章，以此来学习英语。如果你想在你的 Kindle 邮箱里收到我的每日文章收藏的全文 epub 的话，可以给我发一个私信: <https://twitter.com/OwenYoungZh>, 我会手动把你的邮件地址也加入到推送列表。
+我在遛狗的时候用 Kindle 再次阅读/朗读双语文章，以此来学习英语。
 
-> 注意：在 Kindle 上使用的话，需要把`bot@owenyoung.com`添加进你的信任邮箱列表： `Kindle Approved Personal Document E-mail List`，地址： <https://www.amazon.com/hz/mycd/myx#/home/settings/payment>
+如果你想在你的 Kindle 邮箱里收到我的每日文章收藏的全文 epub 的话，可以使用[Kindle4RSS](https://kindle4rss.com/)服务来自动推送到 kindle.
 
-我使用 Mailjet 的免费额度进行邮件推送，每日限额 200 封，足够我个人使用: <https://app.mailjet.com/>
-
-你可以直接在线阅读所有的文章： <https://clip.owenyoung.com>
-
-或者在这里下载每日的 epub 文件:<https://github.com/theowenyoung/clip/releases>
+你也可以直接在线阅读所有的文章： <https://clip.owenyoung.com>
