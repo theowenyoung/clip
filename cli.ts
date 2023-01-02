@@ -651,9 +651,8 @@ async function main() {
 
           dayNoteContent += `- [${subSection.title}](${subSection.source})`;
           if (subSection.title !== subSection.originalTitle) {
-            dayNoteContent += ` ([双语机翻译文](${baseUrl}/${
-              subSection.path.slice(0, -8)
-            }))`;
+            dayNoteContent += `
+  - ([双语机翻译文](${baseUrl}/${subSection.path.slice(0, -8)}))`;
           }
           dayNoteContent += "\n";
         }
