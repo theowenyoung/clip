@@ -22,7 +22,7 @@ import { gfm } from "https://esm.sh/micromark-extension-gfm@2.0.1";
 import {
   gfmFromMarkdown,
   gfmToMarkdown,
-} from "https://esm.sh/mdast-util-gfm@2.0.1";
+} from "https://esm.sh/mdast-util-gfm@2.0.2";
 // import { default as kebabCase } from "https://jspm.dev/lodash@4.17.21/kebabCase";
 import { toMarkdown } from "https://esm.sh/mdast-util-to-markdown@1.5.0";
 import { fromMarkdown } from "https://esm.sh/mdast-util-from-markdown@1.3.0";
