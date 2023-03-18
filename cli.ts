@@ -391,6 +391,7 @@ async function main() {
     // write to file
     const targetMarkdownFiles: Record<string, string> = {};
     const allFiles: string[] = [];
+    let allPosts: Post[] = [];
     for (const chapter of chapters) {
       let markdownContent = `# ${chapter.title}\n\n`;
       // if title is not the same as original title
@@ -629,6 +630,7 @@ async function main() {
         "README.md",
       );
       await fs.ensureDir(path.dirname(assetDistPath));
+
       await Deno.copyFile(rootReadmePath, assetDistPath);
     }
 
@@ -697,6 +699,38 @@ ${body}
           newSectionContent,
         );
       }
+    }
+
+    // add table of content to index
+    const indexContent = await Deno.readTextFile(
+      path.join(
+        bookSourceFileDist,
+        bookConfig.book.src as string,
+        "README.md",
+      ),
+    );
+
+    if (indexContent.includes("<!-- Table of Content-->")) {
+      // replace it
+      let tableOfContent = ``;
+
+      for (const chapter of allChapters) {
+        tableOfContent +=
+          `- ${chapter.day} [${chapter.title}](${chapter.path})\n`;
+      }
+      // replace it with table of content
+      const newContent = indexContent.replace(
+        "<!-- Table of Content-->",
+        tableOfContent,
+      );
+      await Deno.writeTextFile(
+        path.join(
+          bookSourceFileDist,
+          bookConfig.book.src as string,
+          "README.md",
+        ),
+        newContent,
+      );
     }
 
     // write book.toml
