@@ -10,6 +10,7 @@ authors = ["Owen Young"]
 base_url = "https://clip.owenyoung.com"
 git-repository-url = "https://github.com/theowenyoung/clip"
 edit-url-template = "https://github.com/theowenyoung/clip/edit/main/{path}"
+# additional-css = ["custom.css"]
 
 [output.html.search]
 enable = false

@@ -2,6 +2,7 @@
 import * as fs from "https://deno.land/std@0.159.0/fs/mod.ts";
 import { extract } from "https://deno.land/std@0.159.0/encoding/front_matter.ts";
 import { DateTimeFormatter } from "https://deno.land/std@0.159.0/datetime/formatter.ts";
+import { copy } from "https://deno.land/std@0.180.0/fs/copy.ts";
 import * as path from "https://deno.land/std@0.159.0/path/mod.ts";
 import { Feed, FeedOptions } from "https://esm.sh/feed@4.2.2";
 import {
@@ -740,6 +741,15 @@ ${body}
     );
     const bookTomlPath = path.join(bookSourceFileDist, "book.toml");
     await Deno.writeTextFile(bookTomlPath, bookToml);
+
+    // copy static file to dist
+
+    const staticPath = path.join(workDir, "static");
+    const staticDistPath = path.join(bookSourceFileDist);
+
+    await copy(staticPath, staticDistPath, {
+      overwrite: true,
+    });
     console.log(`build book ${key} source files success`);
     const p = Deno.run({
       cmd: ["../../bin/mdbook", "build"],
